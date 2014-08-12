@@ -6,6 +6,7 @@ $(function() {
     username: 'anonymous',
     roomname: 'lobby',
     lastMessageId: 0,
+    objectId: 0,
     friends: {},
 
     init: function() {
@@ -59,7 +60,6 @@ $(function() {
         type: 'GET',
         dataType: 'JSON',
         contentType: 'application/json',
-        // data: { order: '-createdAt'},
         success: function(data) {
           console.log(data);
           console.log('chatterbox: Messages fetched');
@@ -160,7 +160,7 @@ $(function() {
         $message.text(data.text).appendTo($chat);
 
         // Add the message to the UI
-        app.$chats.append($chat);
+        app.$chats.prepend($chat);
       }
     },
     addFriend: function(evt) {
@@ -221,9 +221,11 @@ $(function() {
       var message = {
         username: app.username,
         text: app.$message.val(),
-        roomname: app.roomname || 'lobby'
+        roomname: app.roomname || 'lobby',
+        createdAt: new Date(),
+        objectId: app.objectId
       };
-
+      app.objectId++;
       app.send(message);
 
       // Stop the form from submitting
