@@ -5,6 +5,7 @@
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
 
+
 module.exports.handleRequest = function(request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
@@ -12,23 +13,29 @@ module.exports.handleRequest = function(request, response) {
   /* Documentation for both request and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
 
-  console.log("Serving request type " + request.method + " for url " + request.url);
 
   if (request.method === 'GET'){
-    var statusCode = 200;
-    var endReturn = JSON.stringify( serverData )
+    // if( /\/^classes$\/^messages$/g.test(request.url) ){
+    if( request.url === "/1/classes/messages" ){
+      var statusCode = 200;
+      var endReturn = JSON.stringify( serverData );
+    } else {
+      var statusCode = 404;
+    }
   } else if (request.method === 'POST'){
     var statusCode = 201;
     var body = '';
     request.on('data', function(data){
-      // body += data;
-      // serverData.results.push(body);
-      // response.write(JSON.stringify(data))
+      body += data;
     });
     request.on('end', function(){
-      response.end();
+      var newData = JSON.parse(body);
+      serverData.results.push(newData);
     });
-    // var endReturn = function(){};
+    var endReturn = 'Hey1';
+  } else {
+      var statusCode = 200;
+      var endReturn = "Hey2";
   }
 
   /* Without this line, this server wouldn't work. See the note
