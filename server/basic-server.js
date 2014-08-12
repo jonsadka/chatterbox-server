@@ -1,4 +1,5 @@
 /* Import node's http module: */
+var requestMod = require('./request-handler.js');
 var http = require("http");
 
 
@@ -19,7 +20,7 @@ var ip = "127.0.0.1";
 we could have called it anything (myServer, blahblah, etc.). The function we pass it (handleRequest)
 will, unsurprisingly, handle all incoming requests. (ps: 'handleRequest' is in the 'request-handler' file).
 Lastly, we tell the server we made to listen on the given port and IP. */
-var server = http.createServer(handleRequest);
+var server = http.createServer(requestMod.handleRequest);
 console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);
 
@@ -29,6 +30,8 @@ server.listen(port, ip);
 
  * To connect to the server, load http://127.0.0.1:8080 in your web
  * browser.
+
+ //Really 127.0.0.1:3000
 
  * server.listen() will continue running as long as there is the
  * possibility of serving more requests. To stop your server, hit
